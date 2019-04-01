@@ -11,7 +11,7 @@ const Footer = props => {
         <div className="col-6">
           <ul className="topicos-footer">
             <li><a href="https://angular.io/">Documentação React</a></li>
-            <li><a href="https://github.com/andersonrodrigo/projetoAG">Projeto no GIT</a></li>
+            <li><a href="https://github.com/andersonrodrigo/projeto-ra">Projeto no GIT</a></li>
           </ul>
         </div>
         
