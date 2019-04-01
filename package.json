@@ -13,13 +13,14 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "set PUBLIC_URL=http://localhost:8080/projeto-ra/&& react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
+  "homepage": "http://localhost/projeto-ra",
   "browserslist": [
     ">0.2%",
     "not dead",

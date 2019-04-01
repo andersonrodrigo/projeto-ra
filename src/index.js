@@ -13,6 +13,8 @@ ReactDOM.render(
 <BrowserRouter>
 <Header></Header>
     <Switch>
+    
+    <Route path="/projeto-ra" exact={true} component={App} />
             <Route path="/" exact={true} component={App} />
             <Route path="/banco" component={Principal} />
     </Switch>
