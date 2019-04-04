@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 const EditUserForm = props => {
+	debugger
   const [ banco, setBanco ] = useState(props.currentBanco)
 
   useEffect(
