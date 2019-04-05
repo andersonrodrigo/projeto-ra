@@ -1,6 +1,5 @@
 import React, { useState, Fragment } from 'react'
 
-
 import {
 	SortingState, CustomPaging, EditingState, PagingState, SummaryState,
 	IntegratedPaging, IntegratedSorting, IntegratedSummary,
@@ -11,6 +10,8 @@ import {
   TableHeaderRow,
   PagingPanel,
   TableColumnResizing,
+  TableEditRow,
+  TableEditColumn,
 } from '@devexpress/dx-react-grid-bootstrap4';
 
 import AddUserForm from './AddUserForm'
@@ -22,16 +23,18 @@ const URL = 'http://3.16.111.170:8080/listarbancos2';
 const editing = false;
 
 export default class Principal extends React.PureComponent {
+
   constructor(props) {
     super(props);
+    this.commitChanges = this.commitChanges.bind(this);
     this.state = {
       columns: [
         { name: 'codigoBanco', title: 'Codigo' },
         { name: 'descricaoBanco', title: 'Nome' },
         { name: 'descricaoSigla', title: 'Sigla' }
-	  ],
-	  columnWidths: [
-		{ columnName: 'codigoBanco', width: 100 },
+      ],
+      columnWidths: [
+        { columnName: 'codigoBanco', width: 100 },
         { columnName: 'descricaoBanco', width: 400 },
         { columnName: 'descricaoSigla', width: 100 }
       ],
@@ -39,15 +42,39 @@ export default class Principal extends React.PureComponent {
       totalCount: 0,
       pageSize: 6,
       currentPage: 0,
-    loading: true,
-    currentBanco: {}
-  };
-  
-	this.changeColumnWidths = (columnWidths) => {
-		this.setState({ columnWidths });
-	  };
-	this.changeEditingRowIds = editingRowIds => this.setState({ editingRowIds });
+      loading: true,
+      currentBanco: {}
+    };
+
+    this.changeColumnWidths = (columnWidths) => {
+      this.setState({ columnWidths });
+    };
+    this.changeEditingRowIds = editingRowIds => this.setState({ editingRowIds });
     this.changeCurrentPage = this.changeCurrentPage.bind(this);
+  }
+
+
+  commitChanges({ added, changed, deleted }) {
+    debugger
+    let { rows } = this.state;
+    if (added) {
+      const startingAddedId = rows.length > 0 ? rows[rows.length - 1].id + 1 : 0;
+      rows = [
+        ...rows,
+        ...added.map((row, index) => ({
+          id: startingAddedId + index,
+          ...row,
+        })),
+      ];
+    }
+    if (changed) {
+      rows = rows.map(row => (changed[row.codigoBanco] ? { ...row, ...changed[row.codigoBanco] } : row));
+    }
+    if (deleted) {
+      const deletedSet = new Set(deleted);
+      rows = rows.filter(row => !deletedSet.has(row.codigoBanco));
+    }
+    this.setState({ rows });
   }
 
    setCurrentBanco = (banco) =>{
@@ -98,7 +125,6 @@ export default class Principal extends React.PureComponent {
       rows, columns, pageSize, currentPage, totalCount, loading,columnWidths,currentBanco
     } = this.state;
 
-	
     const TableRow = ({ row, ...restProps }) => (
       <Table.Row
         {...restProps}
@@ -141,7 +167,9 @@ export default class Principal extends React.PureComponent {
 							rows={rows}
 							columns={columns}
 							>
-
+<EditingState
+            onCommitChanges={this.commitChanges}
+          />
 <SortingState
             defaultSorting={[{ columnName: 'codigoBanco', direction: 'asc' }, { columnName: 'descricaoBanco', direction: 'asc' },  { columnName: 'descricaoSigla', direction: 'asc' }]}
           />
@@ -161,6 +189,13 @@ export default class Principal extends React.PureComponent {
           />
            <TableHeaderRow showSortingControls />
 							<PagingPanel />
+
+              <TableEditRow />
+          <TableEditColumn
+            showAddCommand
+            showEditCommand
+            showDeleteCommand
+          />
 							</Grid>
 							{loading }
 						</div>
