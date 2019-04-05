@@ -20,41 +20,10 @@ import Tabs from 'react-bootstrap/Tabs'
 
 const URL = 'http://3.16.111.170:8080/listarbancos2';
 const editing = false;
-//const [ editing, setEditing ] = useState(false)
-const initialFormState = { codigoBanco: null, descricaoBanco: '', descricaoSigla: '' }
-let currentBanco ={};
-const setCurrentBanco = (banco) =>{
-	currentBanco = banco
-}
-//const [ currentBanco, setCurrentBanco ] = useState(initialFormState)
-const addBanco = banco => {
-	banco.codigoBanco = banco.length + 1
-}
-const setEditing = (editing) =>{
-	editing = editing
-}
-const updateBanco = (codigoBanco, updateBanco) => {
-//	setEditing(false)
-editing = true
-}
-const TableRow = ({ row, ...restProps }) => (
-	<Table.Row
-	  {...restProps}
-	 
-	  onClick={() =>{ 
-		 // alert(JSON.stringify(row))
-		setCurrentBanco(row);
-		setEditing(true)
-		document.getElementById('controlled-tab-example-tab-formulario').click()
-	}}
-	
-	/>
-  );
+
 export default class Principal extends React.PureComponent {
   constructor(props) {
     super(props);
-	
- 
     this.state = {
       columns: [
         { name: 'codigoBanco', title: 'Codigo' },
@@ -70,9 +39,10 @@ export default class Principal extends React.PureComponent {
       totalCount: 0,
       pageSize: 6,
       currentPage: 0,
-	  loading: true
-	  
-	};
+    loading: true,
+    currentBanco: {}
+  };
+  
 	this.changeColumnWidths = (columnWidths) => {
 		this.setState({ columnWidths });
 	  };
@@ -80,6 +50,9 @@ export default class Principal extends React.PureComponent {
     this.changeCurrentPage = this.changeCurrentPage.bind(this);
   }
 
+   setCurrentBanco = (banco) =>{
+    this.currentBanco = banco
+  }
   componentDidMount() {
     this.loadData();
   }
@@ -120,12 +93,27 @@ export default class Principal extends React.PureComponent {
   }
 
   render() {
+
     const {
-      rows, columns, pageSize, currentPage, totalCount, loading,columnWidths
+      rows, columns, pageSize, currentPage, totalCount, loading,columnWidths,currentBanco
     } = this.state;
 
 	
-
+    const TableRow = ({ row, ...restProps }) => (
+      <Table.Row
+        {...restProps}
+       
+        onClick={() =>{ 
+         // alert(JSON.stringify(row))
+         this.setCurrentBanco(row);
+        this.setState({ currentBanco: row });
+       // debugger
+       // setEditing(true)
+        document.getElementById('controlled-tab-example-tab-formulario').click()
+      }}
+      
+      />
+      );
 
 
 
@@ -190,15 +178,16 @@ export default class Principal extends React.PureComponent {
 							<h2>Edit Banco</h2>
 							<EditUserForm
 								editing={editing}
-								setEditing={setEditing}
-								currentBanco={currentBanco}
-								updateBanco={updateBanco}
+						//		setEditing={setEditing}
+								bancoCorrente={this.currentBanco}
+             //   updateBanco={updateBanco}
+                {...currentBanco}
 							/>
 						</Fragment>
 					) : (
 						<Fragment>
 							<h2>Banco</h2>
-							<AddUserForm addBanco={addBanco} />
+							<AddUserForm  />
 						</Fragment>
 					)}
 						</Fragment>
