@@ -1,5 +1,6 @@
 import React, { useState, Fragment } from 'react'
-
+import axios from 'axios';
+import Alert from 'react-bootstrap/Alert'
 import {
 	SortingState, CustomPaging, EditingState, PagingState, SummaryState,
 	IntegratedPaging, IntegratedSorting, IntegratedSummary,
@@ -14,16 +15,10 @@ import {
   TableEditColumn,
 } from '@devexpress/dx-react-grid-bootstrap4';
 
-import AddUserForm from './AddUserForm'
-import EditUserForm from './EditUserForm'
-import Tab from 'react-bootstrap/Tab'
-import Tabs from 'react-bootstrap/Tabs'
 
-const URL = 'http://3.16.111.170:8080/listarbancos2';
-const editing = false;
-
+const URL = 'http://3.16.111.170:8080/';
+//const URL = 'http://127.0.0.1:8091/';
 export default class Principal extends React.PureComponent {
-
   constructor(props) {
     super(props);
     this.commitChanges = this.commitChanges.bind(this);
@@ -40,10 +35,12 @@ export default class Principal extends React.PureComponent {
       ],
       rows: [],
       totalCount: 0,
-      pageSize: 6,
+      pageSize: 5,
       currentPage: 0,
       loading: true,
-      currentBanco: {}
+      currentBanco: {},
+      showMessage: false,
+      message: ''
     };
 
     this.changeColumnWidths = (columnWidths) => {
@@ -55,8 +52,8 @@ export default class Principal extends React.PureComponent {
 
 
   commitChanges({ added, changed, deleted }) {
-    debugger
-    let { rows } = this.state;
+    let { rows, showMessage,message  } = this.state;
+
     if (added) {
       const startingAddedId = rows.length > 0 ? rows[rows.length - 1].id + 1 : 0;
       rows = [
@@ -66,13 +63,36 @@ export default class Principal extends React.PureComponent {
           ...row,
         })),
       ];
+      for (var key in added){
+        this.salvarBanco(added[key]);
+      }
+      this.setState({
+        showMessage: true,
+        message: 'Banco salvo com sucesso!'
+      });
     }
     if (changed) {
-      rows = rows.map(row => (changed[row.codigoBanco] ? { ...row, ...changed[row.codigoBanco] } : row));
+      rows = rows.map(row =>
+        (changed[row.id] ? { ...row, ...changed[row.id] } : row)
+      );
+      for (var key in changed){
+        this.salvarBanco(rows[key]);
+      }
+      this.setState({
+        showMessage: true,
+        message: 'Banco alterado com sucesso!'
+      });
     }
     if (deleted) {
+      for (var key in deleted){
+        this.excluiBanco(rows[key])
+      }
       const deletedSet = new Set(deleted);
-      rows = rows.filter(row => !deletedSet.has(row.codigoBanco));
+      rows = rows.filter(row => !deletedSet.has(row.id));
+      this.setState({
+        showMessage: true,
+        message: 'Banco excluido com sucesso!'
+      });
     }
     this.setState({ rows });
   }
@@ -87,6 +107,25 @@ export default class Principal extends React.PureComponent {
   componentDidUpdate() {
     this.loadData();
   }
+  salvarBanco(banco) {
+    delete banco.id;
+    banco.codigoUsuario = "anomimo";
+    banco.codigoBanco = parseInt(banco.codigoBanco)
+    banco.dataLastrec = "2019-01-01";
+    axios.post(URL + 'salvarbanco',JSON.stringify(banco), {
+      headers: {
+          'Content-Type': 'application/json',
+      }
+  })
+    .then(response => console.log(response))
+  }
+
+
+  excluiBanco(banco) {
+    axios.delete(URL + 'removebanco/' + banco.codigoBanco)
+    .then(response => console.log(response))
+  }
+
 
   changeCurrentPage(currentPage) {
     this.setState({
@@ -98,8 +137,11 @@ export default class Principal extends React.PureComponent {
   queryString() {
     const { pageSize, currentPage } = this.state;
 
-    return `${URL}?page=${currentPage}&size=${pageSize}`;
+    return `${URL}listarbancos2?page=${currentPage}&size=${pageSize}`;
   }
+
+
+  
 
   loadData() {
     const queryString = this.queryString();
@@ -110,11 +152,16 @@ export default class Principal extends React.PureComponent {
 
     fetch(queryString)
       .then(response => response.json())
-      .then(data => this.setState({
+      .then(data => {
+        data.content.map((row, index) =>{
+          row.id = index++;
+        });
+        this.setState({
         rows: data.content,
         totalCount: data.totalElements,
         loading: false,
-      }))
+      })
+    })
       .catch(() => this.setState({ loading: false }));
     this.lastQuery = queryString;
   }
@@ -122,117 +169,67 @@ export default class Principal extends React.PureComponent {
   render() {
 
     const {
-      rows, columns, pageSize, currentPage, totalCount, loading,columnWidths,currentBanco
+      rows, columns, pageSize, currentPage, totalCount, loading,columnWidths, message, showMessage
     } = this.state;
-
-    const TableRow = ({ row, ...restProps }) => (
-      <Table.Row
-        {...restProps}
-       
-        onClick={() =>{ 
-         // alert(JSON.stringify(row))
-         this.setCurrentBanco(row);
-        this.setState({ currentBanco: row });
-       // debugger
-       // setEditing(true)
-        document.getElementById('controlled-tab-example-tab-formulario').click()
-      }}
-      
-      />
-      );
-
-
-
+    const handleHide = () => this.setState({ showMessage: false });
+    
     return (
-<div className="card" style={{ position: 'relative' }}> 
-<Tabs
-        id="controlled-tab-example"
-        defaultActiveKey="selecao"
-      >
-        <Tab eventKey="selecao" title="Seleção">
+      <div className="card" style={{ position: 'relative' }}>
+        <div className="flex-large">
+          <div className="flex-large">
 
 
-                <div className="flex-large"> 
-				<div className="flex-large">
-				
-				<Fragment>
-					<h2>Bancos</h2>
-					
-				</Fragment>
-		
-		</div>
+          <Alert key="primary" variant="primary" show={showMessage} dismissible onClose={handleHide}>
+            {message}
+          </Alert>
+
+            <Fragment>
+              <h2 class="titulo">Bancos</h2>
+            </Fragment>
+          </div>
+          <Grid
+            rows={rows}
+            columns={columns}
+            
+          >
+            <EditingState
+              onCommitChanges={this.commitChanges}
+            />
+            <SortingState
+              defaultSorting={[{ columnName: 'codigoBanco', direction: 'asc' }, { columnName: 'descricaoBanco', direction: 'asc' }, { columnName: 'descricaoSigla', direction: 'asc' }]}
+            />
+            <IntegratedSorting />
+            <PagingState
+              currentPage={currentPage}
+              onCurrentPageChange={this.changeCurrentPage}
+              pageSize={pageSize}
+            />
+            <CustomPaging
+              totalCount={totalCount}
+            />
+            <Table />
+            <TableColumnResizing
+              columnWidths={columnWidths}
+              onColumnWidthsChange={this.changeColumnWidths}
+            />
+            <TableHeaderRow showSortingControls />
+            <PagingPanel />
+            <TableEditRow />
+            <TableEditColumn
+              showAddCommand
+              addCommand="Novo"	
+              showEditCommand
+              showDeleteCommand
+            />
+          </Grid>
+         
+          {loading}
+        </div>
+ 
+      </div>
 
 
-							<Grid
-							rows={rows}
-							columns={columns}
-							>
-<EditingState
-            onCommitChanges={this.commitChanges}
-          />
-<SortingState
-            defaultSorting={[{ columnName: 'codigoBanco', direction: 'asc' }, { columnName: 'descricaoBanco', direction: 'asc' },  { columnName: 'descricaoSigla', direction: 'asc' }]}
-          />
-		       <IntegratedSorting />
-							<PagingState
-								currentPage={currentPage}
-								onCurrentPageChange={this.changeCurrentPage}
-								pageSize={pageSize}
-							/>
-							<CustomPaging
-								totalCount={totalCount}
-							/>
-							  <Table rowComponent={TableRow}/>
-          <TableColumnResizing
-            columnWidths={columnWidths}
-            onColumnWidthsChange={this.changeColumnWidths}
-          />
-           <TableHeaderRow showSortingControls />
-							<PagingPanel />
-
-              <TableEditRow />
-          <TableEditColumn
-            showAddCommand
-            showEditCommand
-            showDeleteCommand
-          />
-							</Grid>
-							{loading }
-						</div>
-
-					 
-</Tab>
-<Tab eventKey="formulario" title="Formulario">
-	
-			<div className="flex-large">
-				
-						<Fragment>
-							<h2></h2>
-							{editing ? (
-						<Fragment>
-							<h2>Edit Banco</h2>
-							<EditUserForm
-								editing={editing}
-						//		setEditing={setEditing}
-								bancoCorrente={this.currentBanco}
-             //   updateBanco={updateBanco}
-                {...currentBanco}
-							/>
-						</Fragment>
-					) : (
-						<Fragment>
-							<h2>Banco</h2>
-							<AddUserForm  />
-						</Fragment>
-					)}
-						</Fragment>
-				
-				</div>
-</Tab>
-</Tabs>
-			</div>
-
-
+ 
 
     );
   }

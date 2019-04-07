@@ -141,3 +141,59 @@ i{
 .dx-g-bs4-table-cell{
   cursor: pointer;
 }
+.table{
+  width: 62%!important;
+  margin-bottom: 1rem;
+  color: #212529;
+  margin-left: 136px;
+  margin-top: 20px;
+}
+
+.table-responsive{
+height: 363px;
+overflow-y: auto;
+}
+.titulo{
+  text-align: center;
+}
+nav{
+    margin-right: 28%;
+}
+
+#delete{
+  color: transparent;
+  font-size: 0;
+  margin-top: 10px;
+  padding-bottom: 13px;
+  background: url('./icons/remove.png') no-repeat;
+}
+#add{
+  color: transparent;
+  font-size: 0;
+  padding-bottom: 25px;
+  background: url('./icons/add.png') no-repeat;
+
+}
+#edit{
+  color: transparent;
+  font-size: 0;
+  margin-top: 10px;
+  padding-bottom: 13px;
+  background: url('./icons/edit.png') no-repeat;
+}
+
+#commit{
+  color: transparent;
+  font-size: 0;
+  margin-top: 10px;
+  padding-bottom: 13px;
+  background: url('./icons/save.png') no-repeat;
+}
+
+#cancel{
+  color: transparent;
+  font-size: 0;
+  margin-top: 10px;
+  padding-bottom: 13px;
+  background: url('./icons/cancel.png') no-repeat;
+}
