@@ -10,6 +10,8 @@ import Home from '../components/home/home'
 import BancoCrud from '../components/banco/banco-crud';
 import BancoGrid from '../components/banco/banco-grid';
 
+import Empenho from '../components/empenho/empenho-crud';
+
 import Footer from '../components/templates/footer'
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 export default  props =>
@@ -21,6 +23,7 @@ export default  props =>
          <Route exact path="/" component={Home}/>
          <Route exact path="/bancos" component={BancoCrud} />
          <Route exact path="/bancosgrid" component={BancoGrid} />
+         <Route exact path="/empenho" component={Empenho} />
          <Redirect from="*" to="/" />
       </Switch>
    </BrowserRouter>

@@ -230,6 +230,11 @@ body {
     margin-top: 15px;
   }
 
+  .formEmpenho{
+    margin-left: 2px;
+    margin-right: 68px;
+  }
+
   .botoes{
     margin-left: 240px !important;
   }

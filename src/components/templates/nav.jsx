@@ -14,5 +14,8 @@ export default props =>
             <Link to="/bancosgrid">
                <i className="fa fa-align-justify"></i>&nbsp;Grid de Bancos
             </Link>
+            <Link to="/empenho">
+               <i className="fa fa-android"></i>&nbsp;Empenho
+            </Link>
         </nav>
  </aside>
