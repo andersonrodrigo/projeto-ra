@@ -1,0 +1,235 @@
+.tabSelecao{
+    height: 342px;
+    overflow-y: auto;
+}
+.nav{
+    display: -webkit-inline-box !important;
+}
+.table{
+    margin-top: -2px;
+}
+
+
+
+
+
+
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+      "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+      monospace;
+  }
+  button,
+  .button {
+      margin-bottom: 0 !important;
+      margin-right: .5rem;
+  }
+  .wrapper-header  {
+    height: 30vh;
+    padding: 30px;
+    background: #7c7361;
+    color: #fff;
+    box-shadow: 0 2px 5px -2px grey;
+    }
+    .menu-header li  {
+    display: block;
+    font-size: 16px;
+    margin-left: -24px;
+    padding: 0px;
+    }
+    .acessar-conta {
+    position: relative;
+    top: 10px;
+    background-color: #fff;
+    border: 0;
+    color: #333;
+    }
+    @media screen and (min-width: 600px) {
+    .wrapper-header {
+    height: 10vh;
+    width: 95%;
+    }
+    .menu-header li {
+    list-style: none;
+    display: inline;
+    position: relative;
+    margin: 10px;
+    top: 30px;
+    font-size: 18px;
+    }
+  }
+  a {
+    color: papayawhip;
+    text-decoration: none;
+    background-color: transparent;
+  }
+  button { cursor:pointer; }
+  .topicos {
+       
+    height: 9vh;
+    width: 100%;
+    background: lightgrey;
+    color: rgba(255, 255, 255, 0.6) !important;
+    /*padding: 90px;*/
+    position:absolute;
+  bottom:0;
+  right: 0;
+    }
+    .topicos h6 {
+    color: #fff;
+    }
+    .topicos li {
+    list-style: none;
+    line-height: 3;
+    }
+  
+    a > i {
+      color: white !important;
+      text-decoration: none;
+      background-color: transparent;
+  }
+  
+    .rodape p {
+    padding-top: 6px;
+    }
+  
+    @import url('https://fonts.googleapis.com/css?family=Crete+Round|Poppins');
+  .wrapper-content {
+
+  width: 100%;
+  margin-top: 1px;
+  height: 54vh;
+  background-color: lightgray;
+  
+  }
+  .box-tile {
+    width: 40vw;
+    height: 100px;
+    /* position: absolute; */
+    top: 42%;
+    left: 14%;
+    padding: 10px;
+  }
+  .wrapper-content h1 {
+    position: absolute;
+    font-size: 60pt;
+    color: #fff;
+    text-shadow: 2px 2px #333;
+    font-family: 'Crete Round', serif !important;
+    top: -63px;
+    width: 100%;
+    left: 232px;
+  }
+  .tag {
+  font-size: 2-pt;
+  color: chocolate;
+  font-weight: bold;
+  }
+  .bg_img{
+  right: 0;
+  bottom: 0;
+  min-width: 50%;
+  min-height: 50%;
+  width: auto;
+  height: auto;
+  z-index: -1000;
+ 
+  background-size: cover;
+  }
+  
+  .telaPrincipal{
+    position: absolute;
+    left: 141px;
+    top: 140px;
+    width: 56%;
+  }
+  i{
+    cursor: pointer;
+  }
+  .dx-g-bs4-table-cell{
+    cursor: pointer;
+  }
+  .table{
+    width: 62%!important;
+    margin-bottom: 1rem;
+    color: #212529;
+    margin-left: 136px;
+    margin-top: 20px;
+  }
+  
+  .table-responsive{
+  height: 363px;
+  overflow-y: auto;
+  }
+  .titulo{
+    text-align: center;
+  }
+  nav{
+      margin-right: 28%;
+  }
+  
+  #delete{
+    color: transparent;
+    font-size: 0;
+    margin-top: 10px;
+    padding-bottom: 13px;
+    background: url('../icons/remove.png') no-repeat;
+  }
+  #add{
+    color: transparent;
+    font-size: 0;
+    padding-bottom: 25px;
+    background: url('../icons/add.png') no-repeat;
+  
+  }
+  #edit{
+    color: transparent;
+    font-size: 0;
+    margin-top: 10px;
+    padding-bottom: 13px;
+    background: url('../icons/edit.png') no-repeat;
+  }
+  
+  #commit{
+    color: transparent;
+    font-size: 0;
+    margin-top: 10px;
+    padding-bottom: 13px;
+    background: url('../icons/save.png') no-repeat;
+  }
+  
+  #cancel{
+    color: transparent;
+    font-size: 0;
+    margin-top: 10px;
+    padding-bottom: 13px;
+    background: url('../icons/cancel.png') no-repeat;
+  }
+  
+  alert-primary {
+    position: absolute !important;
+  }
+
+  fade alert alert-primary alert-dismissible show{
+    position: absolute !important;
+  }
+
+
+  .form{
+    margin-left: 154px;
+    margin-top: 15px;
+  }
+
+  .botoes{
+    margin-left: 240px !important;
+  }

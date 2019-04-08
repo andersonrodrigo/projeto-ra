@@ -197,3 +197,7 @@ nav{
   padding-bottom: 13px;
   background: url('./icons/cancel.png') no-repeat;
 }
+
+alert-primary {
+  position: absolute !important;
+}

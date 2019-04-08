@@ -1,9 +1,10 @@
-import React, { useState, Fragment } from 'react'
+import React from 'react'
 import axios from 'axios';
+import Main from '../templates/main'
 import Alert from 'react-bootstrap/Alert'
 import {
-	SortingState, CustomPaging, EditingState, PagingState, SummaryState,
-	IntegratedPaging, IntegratedSorting, IntegratedSummary,
+	SortingState, CustomPaging, EditingState, PagingState,
+	IntegratedSorting
   } from '@devexpress/dx-react-grid';
 import {
   Grid,
@@ -16,9 +17,15 @@ import {
 } from '@devexpress/dx-react-grid-bootstrap4';
 
 
+const headerProps = {
+    icone:'align-justify',
+    title: 'Bancos',
+    subtitle: 'Grid de Bancos'
+}
+
 const URL = 'http://3.16.111.170:8080/';
 //const URL = 'http://127.0.0.1:8091/';
-export default class Principal extends React.PureComponent {
+export default class BancoGrid extends React.Component {
   constructor(props) {
     super(props);
     this.commitChanges = this.commitChanges.bind(this);
@@ -37,7 +44,6 @@ export default class Principal extends React.PureComponent {
       totalCount: 0,
       pageSize: 5,
       currentPage: 0,
-      loading: true,
       currentBanco: {},
       showMessage: false,
       message: ''
@@ -48,11 +54,12 @@ export default class Principal extends React.PureComponent {
     };
     this.changeEditingRowIds = editingRowIds => this.setState({ editingRowIds });
     this.changeCurrentPage = this.changeCurrentPage.bind(this);
+    this.loadData();
   }
 
 
   commitChanges({ added, changed, deleted }) {
-    let { rows, showMessage,message  } = this.state;
+    let { rows  } = this.state;
 
     if (added) {
       const startingAddedId = rows.length > 0 ? rows[rows.length - 1].id + 1 : 0;
@@ -75,7 +82,7 @@ export default class Principal extends React.PureComponent {
       rows = rows.map(row =>
         (changed[row.id] ? { ...row, ...changed[row.id] } : row)
       );
-      for (var key in changed){
+      for (key in changed){
         this.salvarBanco(rows[key]);
       }
       this.setState({
@@ -84,7 +91,7 @@ export default class Principal extends React.PureComponent {
       });
     }
     if (deleted) {
-      for (var key in deleted){
+      for (key in deleted){
         this.excluiBanco(rows[key])
       }
       const deletedSet = new Set(deleted);
@@ -100,13 +107,9 @@ export default class Principal extends React.PureComponent {
    setCurrentBanco = (banco) =>{
     this.currentBanco = banco
   }
-  componentDidMount() {
-    this.loadData();
-  }
 
-  componentDidUpdate() {
-    this.loadData();
-  }
+
+
   salvarBanco(banco) {
     delete banco.id;
     banco.codigoUsuario = "anomimo";
@@ -122,16 +125,16 @@ export default class Principal extends React.PureComponent {
 
 
   excluiBanco(banco) {
-    axios.delete(URL + 'removebanco/' + banco.codigoBanco)
+    axios.delete(URL + 'excluibanco/' + banco.codigoBanco)
     .then(response => console.log(response))
   }
 
 
   changeCurrentPage(currentPage) {
-    this.setState({
-      loading: true,
-      currentPage,
-    });
+    this.setState({currentPage: currentPage}, ()=>{
+        console.log(this.state.currentPage)
+        this.loadData();
+    })
   }
 
   queryString() {
@@ -139,17 +142,12 @@ export default class Principal extends React.PureComponent {
 
     return `${URL}listarbancos2?page=${currentPage}&size=${pageSize}`;
   }
-
-
   
 
-  loadData() {
-    const queryString = this.queryString();
-    if (queryString === this.lastQuery) {
-      this.setState({ loading: false });
-      return;
-    }
 
+  loadData() {
+    this.setState({ showMessage: false });
+    const queryString = this.queryString();
     fetch(queryString)
       .then(response => response.json())
       .then(data => {
@@ -174,6 +172,7 @@ export default class Principal extends React.PureComponent {
     const handleHide = () => this.setState({ showMessage: false });
     
     return (
+        <Main {...headerProps}>
       <div className="card" style={{ position: 'relative' }}>
         <div className="flex-large">
           <div className="flex-large">
@@ -183,9 +182,7 @@ export default class Principal extends React.PureComponent {
             {message}
           </Alert>
 
-            <Fragment>
-              <h2 class="titulo">Bancos</h2>
-            </Fragment>
+         
           </div>
           <Grid
             rows={rows}
@@ -223,14 +220,11 @@ export default class Principal extends React.PureComponent {
             />
           </Grid>
          
-          {loading}
+        
         </div>
  
       </div>
-
-
- 
-
+      </Main>
     );
   }
 }

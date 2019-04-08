@@ -1,0 +1,69 @@
+:root{
+    --bg-dark: #1a2f3a;
+    --logo-height: 100px;
+    --header-height:100px;
+    --aside-width: 100px;
+    --footer-height:40px;
+
+    --shadow:
+    0 2px 23px 0 rgba(0,0,0,0.1),
+    0 2px 49px 0 rgba(0,0,0,0.6)
+}
+*{
+    box-sizing: border-box;
+    font-family: "Monserrrat", sans-serif;
+}
+
+.app{
+    margin: 0;
+    display: grid;
+    grid-template-columns: var(--aside-width) lfr;
+    grid-template-rows:
+      var(--header-height)
+      lfr
+      var(--footer-height);
+      /*quebrando o layout em reas
+      logi e header area 1 
+      menu e content area 2
+      menu e footer area 2*/
+      grid-template-areas:
+        "Logo header"
+        "menu contenct"
+        "menu footer";
+        height: 45vh;
+        width: 100vh;
+        background-color: #f5f5f5;
+}
+
+/*aside Logo*/
+aside.logo{
+    grid-area: logo
+}
+/*tag header clss header*/
+header.header{
+    grid-area: header
+}
+/*aside menu-area*/
+aside.menu-area{
+    grid-area: menu
+}
+/*aside content*/
+aside.content{
+    grid-area: content;
+}
+/*tag footer e classe footer*/
+footer.footer{
+    grid-area: footer;
+}
+
+.imgLogo{
+    width: 200px;
+}
+
+.content{
+    height: 55vh;
+}
+main > div {
+    background-color: white;
+    box-shadow: 0px 0px 15px #0004;
+}
