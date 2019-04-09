@@ -17,13 +17,19 @@
 
 body {
     margin: 0;
-    padding: 0;
+     
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
       "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
       sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-size: 0.8rem!important;
+
+
+      display: flex;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 10px;
   }
   
   code {
@@ -118,7 +124,7 @@ body {
     height: 100px;
     /* position: absolute; */
     top: 42%;
-    left: 14%;
+    left: -19%;
     padding: 10px;
   }
   .wrapper-content h1 {
@@ -249,4 +255,13 @@ body {
   }
 .empenhopills{
   margin-top: 5px;
+}
+
+th {
+  text-align: center;
+  border: 1px solid black;
+  background: #018ded;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
 }
