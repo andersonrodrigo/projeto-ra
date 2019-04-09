@@ -1,5 +1,5 @@
 .tabSelecao{
-    height: 342px;
+    height: 466px;
     overflow-y: auto;
 }
 .nav{
@@ -23,6 +23,7 @@ body {
       sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-size: 0.8rem!important;
   }
   
   code {
@@ -78,7 +79,7 @@ body {
        
     height: 9vh;
     width: 100%;
-    background: lightgrey;
+    background: lavender;
     color: rgba(255, 255, 255, 0.6) !important;
     /*padding: 90px;*/
     position:absolute;
@@ -108,7 +109,7 @@ body {
 
   width: 100%;
   margin-top: 1px;
-  height: 54vh;
+  height: 68vh;
   background-color: lightgray;
   
   }
@@ -238,3 +239,14 @@ body {
   .botoes{
     margin-left: 240px !important;
   }
+  .tabelaEmpenho{
+    margin-left: 15px;
+    margin-top: -8px;
+  }
+
+  .botaoNavegador{
+    background-color: ghostwhite!important;
+  }
+.empenhopills{
+  margin-top: 5px;
+}

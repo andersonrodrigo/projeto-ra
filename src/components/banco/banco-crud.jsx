@@ -72,7 +72,7 @@ export default class BancoCrud extends React.Component{
 
     rendertable(){
         return(
-            <table className="table st-4">
+            <table className="table st-4 tableBanco">
             <thead>
                 <tr>
                     <th width="10%">Codigo </th>
@@ -101,7 +101,7 @@ export default class BancoCrud extends React.Component{
         return this.state.list.map((pages,index) => {
             return (
                 <li className="nav-item" key={index}>
-                     <a className='nav-link nav-link btn mr-2' href='#' onClick={() => this.setPage(index)}> {index + 1}</a>
+                     <a className='nav-link nav-link btn mr-2 botaoNavegador' href='#' onClick={() => this.setPage(index)}> {index + 1}</a>
                 </li>
         )})
     }

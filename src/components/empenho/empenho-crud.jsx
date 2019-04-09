@@ -54,20 +54,33 @@ export default class EmpenhoCrud extends React.Component{
 
 montaPayloadEmpenho(empenho){
     {
-        empenho.idtTipoempenho = "1";
+        if (!empenho.idtTipoempenho)
+            empenho.idtTipoempenho = "1";
         empenho.numeroLicitacao = null;
-        empenho.funcionalProgramatica = "02.05.01.10.303.1004.2035";
-        empenho.dataEmpenho = "2018-01-02T02:00:00.000+0000";
-        empenho.unidadeOrcamentaria = "02.05.01";
-        empenho.descricaoUnidadeOrcamentaria = "Fundo Municipal de Saude";
-        empenho.naturezaDespesa  = "3.3.90.39.00";
-        empenho.descricaoNaturezaDespesa = "Outros Serv. Terceiros - Pessoa Jurídica";
-        empenho.naturezaDespesaExecucacao = "3.3.90.39.99";
-        empenho.descricaoNaturezaDespesaExecucao = "Outros Serv. Terceiros -Pessoa Jurídica";
-        empenho.fonteRecurso = "1.02.00";
-        empenho.descricacaoRecurso = "Recursos Próprios - Saúde   mínimo 15%";
-        empenho.fonteRecursoExecucao = "1.02.00";
-        empenho.descricacaoRecursoExecucao = "Recursos Próprios - Saúde   mínimo 15%";
+        if (!empenho.funcionalProgramatica)
+          empenho.funcionalProgramatica = "02.05.01.10.303.1004.2035";
+        if (!empenho.dataEmpenho)
+          empenho.dataEmpenho = "2018-01-02T02:00:00.000+0000";
+        if (!empenho.unidadeOrcamentaria)
+          empenho.unidadeOrcamentaria = "02.05.01";
+        if (!empenho.descricaoUnidadeOrcamentaria)
+          empenho.descricaoUnidadeOrcamentaria = "Fundo Municipal de Saude";
+        if (!empenho.naturezaDespesa)
+          empenho.naturezaDespesa  = "3.3.90.39.00";
+        if (!empenho.descricaoNaturezaDespesa)  
+          empenho.descricaoNaturezaDespesa = "Outros Serv. Terceiros - Pessoa Jurídica";
+        if (!empenho.naturezaDespesaExecucacao)
+          empenho.naturezaDespesaExecucacao = "3.3.90.39.99";
+        if (!empenho.descricaoNaturezaDespesaExecucao)  
+          empenho.descricaoNaturezaDespesaExecucao = "Outros Serv. Terceiros -Pessoa Jurídica";
+        if (!empenho.fonteRecurso)
+          empenho.fonteRecurso = "1.02.00";
+        if (!empenho.descricacaoRecurso)
+          empenho.descricacaoRecurso = "Recursos Próprios - Saúde   mínimo 15%";
+        if (!empenho.fonteRecursoExecucao)
+          empenho.fonteRecursoExecucao = "1.02.00";
+        if (!empenho.descricacaoRecursoExecucao)
+          empenho.descricacaoRecursoExecucao = "Recursos Próprios - Saúde   mínimo 15%";
         empenho.fichaOrcamento = 183;
         empenho.codigoVPD = "3.3.2.3.1.99.00";
         empenho.descricaoVPD = "OUTROS SERVIÇOS TERCEIROS - PJ";
@@ -138,7 +151,7 @@ montaPayloadEmpenho(empenho){
 
     rendertable(){
         return(
-            <table className="table st-4">
+            <table className="table st-4 tabelaEmpenho">
             <thead>
                 <tr>
                     <th width="10%">Numero </th>
@@ -152,7 +165,7 @@ montaPayloadEmpenho(empenho){
                 <tbody>
                     {this.renderows()}
                 </tbody>
-                <ul className="nav nav-pills">
+                <ul className="nav nav-pills empenhopills">
                       {this.renderpages()}
                 </ul>
             </table>
@@ -169,14 +182,14 @@ montaPayloadEmpenho(empenho){
         return this.state.list.map((pages,index) => {
             return (
                 <li className="nav-item" key={index}>
-                     <a className='nav-link nav-link btn mr-2' href='#' onClick={() => this.setPage(index)}> {index + 1}</a>
+                     <a className='nav-link nav-link btn mr-2 botaoNavegador' href='#' onClick={() => this.setPage(index)}> {index + 1}</a>
                 </li>
         )})
     }
 
     loadEmpenho(empenho){
         document.getElementById('controlled-tab-example-tab-formulario').click();
-        axios(`${baseUrl}/empenho?codigoEntidade=${empenho.codigoEntidade}&serieEmpenho=${empenho.serieEmpenho}&numeroEmpenho=${empenho.numeroEmpenho}`).then(resp => {
+        axios(`${baseUrl}/empenho2?codigoEntidade=${empenho.codigoEntidade}&serieEmpenho=${empenho.serieEmpenho}&numeroEmpenho=${empenho.numeroEmpenho}`).then(resp => {
             this.setState({empenho:resp.data})
         })
     }
@@ -199,11 +212,11 @@ montaPayloadEmpenho(empenho){
                     <td>{empenho.codigoUsuario}</td>
                     <td>{empenho.valorEmpenho}</td>
                     <td>
-                        <button className="btn btn-warning mr-2" onClick={() => this.loadBanco(empenho)}>
+                        <button className="btn btn-warning mr-2" onClick={() => this.loadEmpenho(empenho)}>
                             <i className="fa fa-pencil"></i>
                         </button>
                         
-                        <button className="btn btn-danger" onClick={() => this.removeBanco(empenho)}>
+                        <button className="btn btn-danger" onClick={() => this.removeEmpenho(empenho)}>
                             <i className="fa fa-trash"></i>
                         </button>
                     </td>
@@ -230,10 +243,10 @@ montaPayloadEmpenho(empenho){
             <div className="formEmpenho">
             <Tabs
             id="controlled-tab-empenho"
-            defaultActiveKey="parte1"
+            defaultActiveKey="parte1" 
         >
-            <Tab eventKey="parte1" title="Identificação" >
-               <div className="row">
+            <Tab eventKey="parte1" title="Identificação" className="formularioEmpenho">
+               <div className="row ">
                 <div className="col-6 col-md-6">
                     <div className="form group">
                             <label htmlFor="numeroEmpenho">Número Empenho</label>
@@ -282,7 +295,7 @@ montaPayloadEmpenho(empenho){
                 </div>
                 </div>
             </Tab>
-            <Tab eventKey="parte2" title="Credor">
+            <Tab eventKey="parte2" title="Credor" className="formularioEmpenho">
         <div className="row">
                  <div className="col-6 col-md-6">
                     <div className="form group">
@@ -292,6 +305,12 @@ montaPayloadEmpenho(empenho){
                             value={this.state.empenho.codigoCredor}
                             onChange={e => this.updatefield(e)}
                             placeholder="5465"
+                            />
+                             <input type="text" className="form-control"
+                            name="nomeCredor"
+                            value={this.state.empenho.nomeCredor}
+                            onChange={e => this.updatefield(e)}
+                            placeholder="Nome Credor"
                             />
                     </div>
                 </div>
@@ -335,7 +354,7 @@ montaPayloadEmpenho(empenho){
             </Tab>
            
 
-            <Tab eventKey="parte3" title="Fonte Recurso">
+            <Tab eventKey="parte3" title="Fonte Recurso" className="formularioEmpenho">
         <div className="row">
                  <div className="col-6 col-md-6">
                     <div className="form group">
@@ -388,7 +407,7 @@ montaPayloadEmpenho(empenho){
                 </div>
             </Tab>
            
-            <Tab eventKey="naturezaDespeza" title="Natureza de Despeza" >
+            <Tab eventKey="naturezaDespeza" title="Natureza de Despeza" className="formularioEmpenho" >
                <div className="row">
                 <div className="col-6 col-md-6">
                     <div className="form group">
@@ -440,7 +459,7 @@ montaPayloadEmpenho(empenho){
 </Tab>
 
 
-<Tab eventKey="licitacao" title="Licitação" >
+<Tab eventKey="licitacao" title="Licitação" className="formularioEmpenho">
 
             <div className="row">
                 <div className="col-6 col-md-6">
