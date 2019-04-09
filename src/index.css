@@ -149,7 +149,9 @@ i{
   margin-left: 136px;
   margin-top: 20px;
 }
-
+.table td{
+padding: 0.5rem !important;
+}
 .table-responsive{
 height: 363px;
 overflow-y: auto;
